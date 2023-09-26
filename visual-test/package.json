@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "chai": "^4.3.8",
+    "chai-image": "^3.0.0",
+    "selenium-webdriver": "^4.13.0"
+  }
+}
