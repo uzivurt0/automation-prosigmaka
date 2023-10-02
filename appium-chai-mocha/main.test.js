@@ -48,8 +48,21 @@ describe("TESTING ANDROID DUMMY APK", () => {
   describe("TEST IN DETAIL MENU", () => {
     it("VIEW ITEM DETAIL", async function () {
       await selectCatalogItem(driver, 1);
-
-      expect.apply();
+      await driver.waitUntil(async () => {
+        return (
+          (await driver
+            .$(
+              '//android.view.ViewGroup[@content-desc="container header"]/android.widget.TextView'
+            )
+            .getText()) === "Sauce Labs Backpack"
+        );
+      });
+      const text = await driver
+        .$(
+          '//android.view.ViewGroup[@content-desc="container header"]/android.widget.TextView'
+        )
+        .getText();
+      expect(text).to.equal("Sauce Labs Backpack");
     });
     it("SELECTING COLOUR", async function () {
       await selectColourItem(driver, "blue");
@@ -73,15 +86,15 @@ describe("TESTING ANDROID DUMMY APK", () => {
     });
     it("CLICK VIEW CART WHILE QTY IS 0", async function () {
       await viewCart(driver, "No Items");
-      const text = (
-        await driver.$(
+      await driver.pause(1000);
+      const text = await driver
+        .$(
           '//android.view.ViewGroup[@content-desc="container header"]/android.widget.TextView'
         )
-      ).getText();
-      // expect(text).to.equal("No Items");
-      await driver.pause(1000);
+        .getText();
       await driver.back();
       await plusQty(driver, 3);
+      expect(text).to.equal("No Items");
     });
     it("ADD TO CART", async function () {
       await plusQty(driver, 3);
